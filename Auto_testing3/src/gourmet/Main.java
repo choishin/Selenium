@@ -6,7 +6,9 @@ package gourmet;
 	import java.io.IOException;
 	import java.util.List;
 	import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 	import org.openqa.selenium.chrome.ChromeDriver;
 	import org.openqa.selenium.chrome.ChromeOptions;
@@ -41,29 +43,68 @@ import org.openqa.selenium.WebElement;
 				options.addArguments("--disable-default-apps"); // 기본앱 사용안함
 																
 				ChromeDriver driver = new ChromeDriver(options);
-				base_url = "https://map.naver.com/v5/?c=14150420.2196216,4492985.1129456,15,0,0,0,dh";
+				base_url = "https://m.map.naver.com/";
 				driver.get(base_url);
 
 				//입력창에 검색어 순서대로 넣어서 결과 가지고 오기
 				Thread.sleep(2000);
-				driver.findElement(By.xpath("/html/body/app/layout/div[3]/div[2]/shrinkable-layout/div/app-base/search-input-box/div/div[1]/div/input")).sendKeys("서현역 한식 맛집");
+				driver.findElement(By.xpath("/html/body/div[2]/header/div[4]/div/div/div/span[1]")).click();
 				Thread.sleep(2000);
-				driver.findElement(By.xpath("/html/body/app/layout/div[3]/div[2]/shrinkable-layout/div/app-base/search-input-box/div/div[1]/div/input")).sendKeys(Keys.ENTER);
+				driver.findElement(By.xpath("/html/body/div[3]/div[1]/div[1]/form/div/div[2]/div/span[1]/input")).sendKeys("서현역 한식 맛집");
 				Thread.sleep(2000);
-				//iframe이 끼어있다면 한번 switch를 해줘야 함
-				driver.switchTo().frame("searchIframe");			
-				List<WebElement> rows = driver.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[1]/ul/li"));
-				rowsCnt = rows.size();				
+				driver.findElement(By.xpath("/html/body/div[3]/div[1]/div[1]/form/div/div[2]/div/span[1]/input")).sendKeys(Keys.ENTER);
+				Thread.sleep(2000);
 
+				// 행개수 가져오기
+				WebElement body = driver.findElement(By.xpath("/html/body/div[4]/div[2]/ul"));
+				List<WebElement> rows = body.findElements(By.xpath("/html/body/div[4]/div[2]/ul/li"));
+				rowsCnt = rows.size();	
+				System.out.println(rowsCnt);
+														
 				for (int i=1; i<=rowsCnt; i++) {
-					
-					String temp =  driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[1]/ul/li["+i+"]")).getText();
-					System.out.println(temp);
+				try  {
+					Thread.sleep(5000);
+					driver.findElement(By.xpath("/html/body/div[4]/div[2]/ul/li["+i+"]/div[1]/a[2]")).click();	
+							
+				} catch (Exception e) {
+					driver.findElement(By.xpath("/html/body/div[4]/div[2]/ul/li["+i+"]/div[1]/a")).click();			
+					continue;
 				}
 				
+				Thread.sleep(3000);
+				String currentURL = driver.getCurrentUrl();
+				driver.get(currentURL);
+				Thread.sleep(3000);
+				String restaurantName = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/span/span[1]")).getText();
+				Thread.sleep(3000);
+				String stars = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[1]/em")).getText();
+//				String info;
+//				if (driver.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[1]/ul/li["+i+"]/div[1]/a[1]/div[2]/div")).size()>0) {
+//					info = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[1]/ul/li["+i+"]/div[1]/a[1]/div[2]/div")).getText();
+//				}else {
+//					continue;
+//				}
+//				String media;
+//				if (driver.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[1]/ul/li["+i+"]/div[1]/a[1]/div[3]/div")).size() > 0) {
+//					media = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[1]/ul/li["+i+"]/div[1]/a[1]/div[3]/div")).getText();
+//				}else {
+//					continue;
+//				}
+//			
+//				String visitorsReview = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[1]/ul/li["+i+"]/div[1]/a[2]/div/span[2]")).getText();
+//				String bloggerReview = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[1]/ul/li["+i+"]/div[1]/a[2]/div/span[3]")).getText();
+							
+				System.out.println(restaurantName);
+				System.out.println(stars);
+//				System.out.println(info);
+//				System.out.println(media);
+//				System.out.println(stars);
+//				System.out.println(visitorsReview);
+//				System.out.println(bloggerReview);
+				driver.navigate().back();
 				
-//				String first = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[1]/ul/li[1]/div[1]/a[1]/div[1]/div/span")).getText();
-//				System.out.println(first);
+				}
+								
 				driver.close();
 				Thread.sleep(2000);
 				driver.quit();
@@ -73,6 +114,8 @@ import org.openqa.selenium.WebElement;
 			}
 		}
 	}
+	
+	
 //		static void fileMake() {
 //			try {
 //				File file = new File("vaccine_daily.csv");
