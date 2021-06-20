@@ -61,13 +61,15 @@ public class Main {
 			rowsCnt = rows.size();
 			System.out.println(rowsCnt);
 
-			for (int i = 1; i <= rowsCnt; i++) {
+			for (int i = 8; i <= rowsCnt; i++) {
 				// 링크누르기
 				try {
 					Thread.sleep(5000);
-					if (driver.findElements(By.xpath("/html/body/div[4]/div[2]/ul/li[" + i + "]/div[1]/a[2]")).size() > 0) {
+					if (driver.findElements(By.xpath("/html/body/div[4]/div[2]/ul/li[" + i + "]/div[1]/a[2]"))
+							.size() > 0) {
 						driver.findElement(By.xpath("/html/body/div[4]/div[2]/ul/li[" + i + "]/div[1]/a[2]")).click();
-					} else if (driver.findElements(By.xpath("/html/body/div[4]/div[2]/ul/li[" + i + "]/div[1]/a")).size() > 0) {
+					} else if (driver.findElements(By.xpath("/html/body/div[4]/div[2]/ul/li[" + i + "]/div[1]/a"))
+							.size() > 0) {
 						Thread.sleep(5000);
 						driver.findElement(By.xpath("/html/body/div[4]/div[2]/ul/li[" + i + "]/div[1]/a")).click();
 					}
@@ -81,13 +83,20 @@ public class Main {
 				driver.get(currentURL);
 				Thread.sleep(3000);
 				// 이름가져오기
-				String restaurantName = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/span/span[1]")).getText();
+				String restaurantName = driver
+						.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/span/span[1]"))
+						.getText();
 				Thread.sleep(3000);
 				// 별접가져오기
 				String stars;
 				try {
-					if (driver.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[1]/em")).size() > 0) {
-						stars = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[1]/em")).getText();
+					if (driver
+							.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[1]/em"))
+							.size() > 0) {
+						stars = driver
+								.findElement(
+										By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[1]/em"))
+								.getText();
 					} else {
 						stars = "정보없음";
 					}
@@ -95,39 +104,102 @@ public class Main {
 					System.out.println(e);
 					continue;
 				}
-				//방문자리뷰개수
+				// 방문자리뷰개수
 				String visitorsReview;
-				if (driver.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[2]/a")).size() >0) {
-					visitorsReview= driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[2]/a"))
-						.getText();
-				}else {
+				if (driver.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[2]/a"))
+						.size() > 0) {
+					visitorsReview = driver
+							.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[2]/a"))
+							.getText();
+				} else {
 					visitorsReview = "정보없음";
 				}
-				//블로거리뷰개수
+				// 블로거리뷰개수
 				String bloggerReview;
-				if (driver.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[3]/a")).size() >0) {
-					bloggerReview = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[3]/a")).getText();
+				if (driver.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[3]/a"))
+						.size() > 0) {
+					bloggerReview = driver
+							.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[3]/a"))
+							.getText();
 				} else {
 					bloggerReview = "정보없음";
 				}
-				//주소, 소개 등 정보 한번에 가져오기
+				// 주소, 소개 등 정보 한번에 가져오기
 				String context = driver.findElement(By.className("_6aUG7")).getText();
 				System.out.println(restaurantName);
 				System.out.println(stars);
 				System.out.println(visitorsReview);
 				System.out.println(bloggerReview);
-				System.out.println(context);				
-				//메뉴페이지에서 가격 긁어오기
-				Thread.sleep(5000);
-				driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div/a[2]")).click();
+				System.out.println(context);
+				// 메뉴페이지에서 가격 긁어오기
+				WebElement menuBar = null;
+				int menuCnt = 0;
+				String menuTable = null;
+//				//8번째 페이지에 대한 예외처리
+//				if (i==8) {
+//					Thread.sleep(3000);
+//					String innerURL = driver.getCurrentUrl();
+//					driver.get(innerURL);
+//					Thread.sleep(3000);
+//					if(driver.findElements(By.xpath("/html/body/div[1]/div/header/div[2]/div")).size() > 0) {
+//						menuBar = driver.findElement(By.xpath("/html/body/div[1]/div/header/div[2]/div"));
+//						menuCnt = menuBar.findElements(By.xpath("/html/body/div[1]/div/header/div[2]/div/a")).size();
+//						for (int iCnt=1; iCnt <=menuCnt; iCnt++) {
+//							String menu = menuBar.findElement(By.xpath("/html/body/div[1]/div/header/div[2]/div/a["+iCnt+"]")).getText();
+//							if (menu.contains("메뉴")) {
+//								menuBar.findElement(By.xpath("/html/body/div[1]/div/header/div[2]/div/a["+iCnt+"]")).click();
+//								innerURL = driver.getCurrentUrl();
+//								driver.get(innerURL);
+//								Thread.sleep(3000);
+//								menuTable = driver.findElement(By.xpath("/html/body")).getText();
+//							}
+//						}
+//					}
+//				
+//				}
+				if (driver.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div")).size() > 0) {
+					menuBar = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div"));
+					if (menuBar.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div/a"))
+							.size() > 0) {
+						menuCnt = menuBar
+								.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div/a")).size();
+						for (int iCnt = 1; iCnt <= menuCnt; iCnt++) {
+							String menu = menuBar
+									.findElement(By.xpath(
+											"/html/body/div[3]/div/div[2]/div[3]/div/div/div/div/a[" + iCnt + "]"))
+									.getText();
+							if (menu.contains("메뉴")) {
+								menuBar.findElement(
+										By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div/a[" + iCnt + "]"))
+										.click();
+							}
+						}
+					}
+				}
+				
 				Thread.sleep(3000);
-				WebElement menus = driver.findElementByXPath("/html/body/div[3]/div/div[2]/div[4]/div/div[1]/div[1]/ul");
-				int menuCnt = menus.findElements(By.className("_3j-Cj")).size();
-				System.out.println(menuCnt);
-				String menu = driver.findElement(By.className("_3j-Cj")).getText();
-				System.out.println(menu);
-				Thread.sleep(3000);
-				driver.navigate().back();						
+				try {
+
+				if (driver.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[5]/div/div[1]/div/ul")).size() > 0) {
+					menuTable = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[5]/div/div[1]/div/ul"))
+							.getText();
+				}else if (driver.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[5]/div/div[1]/div[1]/ul"))
+						.size() > 0) {
+					menuTable = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[5]/div/div[1]/div[1]/ul"))
+							.getText();
+				}		
+				else {
+					
+				}
+								
+				}catch (Exception e) {
+					System.out.println(e);
+					continue;
+				}
+
+				// int menus = menuTable.findElements(By.className("_3j-Cj")).size();
+				System.out.println(menuTable);
+				driver.navigate().back();
 				driver.navigate().back();
 			}
 
