@@ -1,6 +1,8 @@
 package gourmet;
 
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -58,7 +60,7 @@ public class Context {
 			WebElement body = driver.findElement(By.xpath("/html/body/div[4]/div[2]/ul"));
 			List<WebElement> rows = body.findElements(By.xpath("/html/body/div[4]/div[2]/ul/li"));
 			rowsCnt = rows.size();
-			//행의 개수만큼 링크를 하나씩 누르기
+			// 행의 개수만큼 링크를 하나씩 누르기
 			for (int i = 1; i <= rowsCnt; i++) {
 				try {
 					Thread.sleep(5000);
@@ -74,42 +76,78 @@ public class Context {
 					System.out.println(e);
 					continue;
 				}
-			
-			// 링크열기
-			Thread.sleep(3000);
-			String currentURL = driver.getCurrentUrl();
-			driver.get(currentURL);
-			Thread.sleep(3000);
-			
-			//정보 한번에 가지고 와서, 자르고 가공하기
-			String context = driver.findElement(By.className("_6aUG7")).getText();
-			String[] contextArr = context.split("\n");
-			System.out.println(i);
-			for(int iContext=0; iContext<contextArr.length; iContext++) {
-				if(contextArr[iContext].contains("정보 수정") ||contextArr[iContext].contains("펼쳐")
-						 ||contextArr[iContext].contains("이 업체의 사장님") ||contextArr[iContext].contains("직접 관리")
-						 ||contextArr[iContext].contains("네이버 사업자도구 살펴보기")||contextArr[iContext].contains("스마트스토어")) {
-					contextArr[iContext] = "";				
+
+				// 링크열기
+				Thread.sleep(3000);
+				String currentURL = driver.getCurrentUrl();
+				driver.get(currentURL);
+				Thread.sleep(3000);
+
+				// 정보 한번에 가지고 와서, 자르고 가공하기 (※6,12,20,54 ->영업시간, 편의 등의 단어가 본문에 섞여있음)
+				String context = driver.findElement(By.className("_6aUG7")).getText();
+				String[] contextArr = context.split("\n");
+				String address="";
+				String openHour ="";
+				String service ="";
+				String info="";
+				System.out.println(i);
+				if (!context.contains("주소")) {
+					address="정보없음";
 				}
-//				if (contextArr[iContext].contains("지번복사지도내비게이션거리뷰")) {
-//					contextArr[iContext] = contextArr[iContext].replace("지번복사지도내비게이션거리뷰","");
-//				}	
-				if (contextArr[iContext].contains("주소")) {			
-					System.out.print("주소->"+contextArr[iContext+1].replace("지번복사지도내비게이션거리뷰",""));
-					System.out.println(" "+contextArr[iContext+2].replace("지번복사지도내비게이션거리뷰",""));				
+				if (!context.contains("영업시간")) {
+					openHour="정보없음";
 				}
-				if (contextArr[iContext].contains("영업시간")) {
-					System.out.println("영업시간->"+contextArr[iContext+1]);
+				if (!context.contains("편의")) {
+					service ="정보없음";
 				}
-				if (contextArr[iContext].contains("편의")) {
-					System.out.println("편의->"+contextArr[iContext+1]);
-				}	
-				if (contextArr[iContext].contains("설명")) {
-					System.out.println("설명->"+contextArr[iContext+1]);
+				if (!context.contains("설명")) {
+					info="정보없음";
+				}
+				for (int iContext = 0; iContext < contextArr.length; iContext++) {
+					if (contextArr[iContext].contains("정보 수정") || contextArr[iContext].contains("펼쳐")
+							|| contextArr[iContext].contains("이 업체의 사장님") || contextArr[iContext].contains("직접 관리")
+							|| contextArr[iContext].contains("네이버 사업자도구 살펴보기")
+							|| contextArr[iContext].contains("스마트스토어")) {
+							contextArr[iContext] = "";
+					}
+
+					if (contextArr[iContext].contains("주소")) {
+						address=contextArr[iContext+1].replace("지번복사지도내비게이션거리뷰", "").replace(",","/")+" " +
+					contextArr[iContext + 2].replace("지번복사지도내비게이션거리뷰", "").replace(",","/");
+
+					}
+
+					if (contextArr[iContext].contains("영업시간")) {
+						if(contextArr[iContext].contains("영업시간은") || contextArr[iContext].contains("영업시간이")) {
+							continue;
+						}
+						else {
+							openHour=contextArr[iContext + 1].replace(",", "/");
+						}
+					}
+
+					if (contextArr[iContext].contains("편의")) {
+						service=contextArr[iContext + 1].replace(",", "/");
+					}
+
+					if (contextArr[iContext].contains("설명")) {
+						info=contextArr[iContext + 1].replace(",","/");
+					}
+
+				System.out.println(iContext+"->"+contextArr[iContext]);
+
 				}
 				
-				//System.out.println(iContext+"->"+contextArr[iContext]);
-			}
+//				System.out.println("주소->"+address);
+//				System.out.println("영업시간->"+openHour);
+//				System.out.println("편의->"+service);
+//				System.out.println("설명->"+info);
+				
+//				bfw.append(address+",");
+//				bfw.append(openHour+",");
+//				bfw.append(service+",");
+//				bfw.append(info+",");
+//				bfw.newLine();
 
 //			String[] contextArr = context.split("\n");
 //			System.out.println(contextArr);
@@ -164,7 +202,7 @@ public class Context {
 //				}
 //			}
 
-			driver.navigate().back();
+				driver.navigate().back();
 			}
 			Thread.sleep(3000);
 			driver.close();
@@ -175,45 +213,43 @@ public class Context {
 			System.out.println(e);
 		}
 	}
-}
 
-//	static void fileMake() {
-//		try {
-//			File file = new File("vaccine_daily.csv");
-//			if (file.exists() == false) {
-//				isFileExist = false;
-//			} else {
-//				isFileExist = true;
-//			}
-//			bfw = new BufferedWriter(new FileWriter(file, true));
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			System.out.println(e);
-//		}
-//	}
-//
-//	static void headWrite() throws IOException {
-//
-//		if (isFileExist == false) {
-//			String head = "일자," + "구분," + "1회차접종(당일실적)," + "1회차접종(당일누계)," + "2회차접종(당일실적)," + "2회차접종(당일누계)," + "\n";
-//			bfw.write(head);
-//		}
-//	}
-//
+	static void fileMake() {
+		try {
+			File file = new File("gourmet_Context.csv");
+			if (file.exists() == false) {
+				isFileExist = false;
+			} else {
+				isFileExist = true;
+			}
+			bfw = new BufferedWriter(new FileWriter(file, true));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e);
+		}
+	}
+
+	static void headWrite() throws IOException {
+
+		if (isFileExist == false) {
+			String head = "주소," + "영업시간," + "편의," + "설명," +"\n";
+			bfw.write(head);
+		}
+	}
+
 //	static void fileWrite(String str) throws IOException {
 //	
 //			bfw.append(str);
 //	
 //	}
-//
-//	static void fileClose() {
-//		try {
-//			bfw.close();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-//
-//}
-//
+
+	static void fileClose() {
+		try {
+			bfw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}
