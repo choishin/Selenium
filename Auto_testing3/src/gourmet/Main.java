@@ -197,6 +197,9 @@ public class Main {
 		} catch (InterruptedException e) {
 			System.out.println(e);
 		}
+		finally {
+			System.out.println("Done!");
+		}
 	}
 
 	static void fileMake() {

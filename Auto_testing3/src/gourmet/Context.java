@@ -21,10 +21,10 @@ public class Context {
 
 	public static void main(String[] args) throws InterruptedException, IOException {
 
-//		fileMake();
-//		headWrite();
+		fileMake();
+		headWrite();
 		ReadData();
-//		fileClose();
+		fileClose();
 
 	}
 
@@ -86,68 +86,72 @@ public class Context {
 				// 정보 한번에 가지고 와서, 자르고 가공하기 (※6,12,20,54 ->영업시간, 편의 등의 단어가 본문에 섞여있음)
 				String context = driver.findElement(By.className("_6aUG7")).getText();
 				String[] contextArr = context.split("\n");
-				String address="";
-				String openHour ="";
-				String service ="";
-				String info="";
+				String address = "";
+				String openHour = "";
+				String service = "";
+				String info = "";
 				System.out.println(i);
 				if (!context.contains("주소")) {
-					address="정보없음";
+					address = "정보없음";
 				}
 				if (!context.contains("영업시간")) {
-					openHour="정보없음";
+					openHour = "정보없음";
 				}
 				if (!context.contains("편의")) {
-					service ="정보없음";
+					service = "정보없음";
 				}
 				if (!context.contains("설명")) {
-					info="정보없음";
+					info = "정보없음";
 				}
 				for (int iContext = 0; iContext < contextArr.length; iContext++) {
 					if (contextArr[iContext].contains("정보 수정") || contextArr[iContext].contains("펼쳐")
 							|| contextArr[iContext].contains("이 업체의 사장님") || contextArr[iContext].contains("직접 관리")
 							|| contextArr[iContext].contains("네이버 사업자도구 살펴보기")
 							|| contextArr[iContext].contains("스마트스토어")) {
-							contextArr[iContext] = "";
+						contextArr[iContext] = "";
 					}
 
 					if (contextArr[iContext].contains("주소")) {
-						address=contextArr[iContext+1].replace("지번복사지도내비게이션거리뷰", "").replace(",","/")+" " +
-					contextArr[iContext + 2].replace("지번복사지도내비게이션거리뷰", "").replace(",","/");
+						address = contextArr[iContext + 1].replace("지번복사지도내비게이션거리뷰", "").replace(",", "/") + " "
+								+ contextArr[iContext + 2].replace("지번복사지도내비게이션거리뷰", "").replace(",", "/");
 
 					}
 
 					if (contextArr[iContext].contains("영업시간")) {
-						if(contextArr[iContext].contains("영업시간은") || contextArr[iContext].contains("영업시간이")) {
+						if (contextArr[iContext].contains("영업시간은") || contextArr[iContext].contains("영업시간이")
+								|| contextArr[iContext].contains("영업시간&")) {
 							continue;
-						}
-						else {
-							openHour=contextArr[iContext + 1].replace(",", "/");
+						} else {
+							openHour = contextArr[iContext + 1].replace(",", "/");
 						}
 					}
 
 					if (contextArr[iContext].contains("편의")) {
-						service=contextArr[iContext + 1].replace(",", "/");
+						if (contextArr[iContext].contains("편의시설")) {
+							continue;
+						} else {
+							service = contextArr[iContext + 1].replace(",", "/");
+						}
 					}
 
 					if (contextArr[iContext].contains("설명")) {
-						info=contextArr[iContext + 1].replace(",","/");
+						info = contextArr[iContext + 1].replace(",", "/");
 					}
 
-				System.out.println(iContext+"->"+contextArr[iContext]);
+//				System.out.println(iContext+"->"+contextArr[iContext]);
 
 				}
-				
-//				System.out.println("주소->"+address);
-//				System.out.println("영업시간->"+openHour);
-//				System.out.println("편의->"+service);
-//				System.out.println("설명->"+info);
-				
-//				bfw.append(address+",");
-//				bfw.append(openHour+",");
-//				bfw.append(service+",");
-//				bfw.append(info+",");
-//				bfw.newLine();
+
+				System.out.println("주소->" + address);
+				System.out.println("영업시간->" + openHour);
+				System.out.println("편의->" + service);
+				System.out.println("설명->" + info);
+
+				bfw.append(address+",");
+				bfw.append(openHour+",");
+				bfw.append(service+",");
+				bfw.append(info+",");
+				bfw.newLine();
 
 //			String[] contextArr = context.split("\n");
 //			System.out.println(contextArr);
@@ -211,6 +215,8 @@ public class Context {
 
 		} catch (InterruptedException e) {
 			System.out.println(e);
+		} finally {
+			System.out.println("Done!");
 		}
 	}
 
@@ -232,7 +238,7 @@ public class Context {
 	static void headWrite() throws IOException {
 
 		if (isFileExist == false) {
-			String head = "주소," + "영업시간," + "편의," + "설명," +"\n";
+			String head = "주소," + "영업시간," + "편의," + "설명," + "\n";
 			bfw.write(head);
 		}
 	}
