@@ -1,4 +1,4 @@
-package Study;
+package headLine;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,6 +19,8 @@ public class Test {
 	private static String base_url;
 
 	public static void main(String[] args) throws InterruptedException {
+		
+		try {
 		// WebDriver 경로 설정
 		System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH);
 
@@ -32,25 +34,17 @@ public class Test {
 		ChromeDriver driver = new ChromeDriver(options);
 
 		// 웹페이지 요청
-		base_url = "http://192.168.23.84:8080/ch7/gongji_list.jsp";
-
-		while (true) {
+		base_url = "https://news.naver.com/";
 
 			driver.get(base_url);
 			Thread.sleep(2000);
-			// 웹페이지 입력창에 키워드 넣기
-			driver.findElement(By.xpath("/html/body/form/span/button[2]")).click();
-			Thread.sleep(2000);
-			driver.findElement(By.xpath("/html/body/form/span/table/tbody/tr[2]/td[2]/input")).click();
-			Thread.sleep(2000);
-			driver.findElement(By.xpath("/html/body/form/span/table/tbody/tr[2]/td[2]/input")).sendKeys("호원님 안녕하세요");
-			Thread.sleep(2000);
-			driver.findElement(By.xpath("/html/body/form/span/table/tbody/tr[4]/td[2]/textarea")).click();
-			Thread.sleep(2000);
-			driver.findElement(By.xpath("/html/body/form/span/table/tbody/tr[4]/td[2]/textarea")).sendKeys("게시판 멋있네요!");
-			Thread.sleep(2000);
-			driver.findElement(By.xpath("/html/body/form/span/input[1]")).click();
-		
+			// 상단의 헤드라인 5개 가지고 오기
+			for (int i=1; i<=5; i++) {
+				String title = driver.findElement(By.xpath("/html/body/div/div[6]/div[1]/div/div[1]/div[2]/ul/li["+i+"]")).getText();
+				Thread.sleep(2000);
+				System.out.println(title);
+			}
+					
 //			// 웹페이지 입력창에 키워드 넣기
 //			driver.findElement(By.xpath("/html/body/form/span/input[1]")).click();
 //			driver.findElement(By.xpath("/html/body/form/input[2]")).sendKeys(" ");
@@ -68,16 +62,14 @@ public class Test {
 //			driver.findElement(By.xpath("/html/body/form/input[5]")).sendKeys(" ");
 //			// 탭 종료
 			driver.close();
+			driver.quit();
 
 			// 3초 후에 WebDriver 종료
-			try {
-				Thread.sleep(3000);
+
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			} finally {
-				// WebDriver 종료
-				driver.quit();
-			}
-		}
+			} 
 	}
 }
+	
+
