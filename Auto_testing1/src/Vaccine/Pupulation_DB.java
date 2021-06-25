@@ -58,7 +58,7 @@ public class Pupulation_DB {
 			options.addArguments("--disable-default-apps"); // 기본앱 사용안함
 															// WebDriver 객체 생성
 			ChromeDriver driver = new ChromeDriver(options);
-			base_url = "https://kosis.kr/statHtml/statHtml.do?orgId=202&tblId=DT_202N_B4&conn_path=I2";
+			base_url = "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B040A3";
 			driver.get(base_url);
 
 			// 행개수 가져오기
@@ -80,7 +80,7 @@ public class Pupulation_DB {
 				Thread.sleep(2000);
 				String city_name = driver.findElement(By
 						.xpath("/html/body/form/div[2]/div[5]/div[4]/div[5]/div[1]/table/tbody/tr[" + iRow + "]/td[1]"))
-						.getText().replace(",", "").replace(" ", "");
+						.getText().replace(",", "").replace(" ", "").replace("2)", "").replace("3)", "").replace("\n","");
 				String city_population = driver.findElement(By
 						.xpath("/html/body/form/div[2]/div[5]/div[4]/div[5]/div[1]/table/tbody/tr[" + iRow + "]/td[2]"))
 						.getText().replace(",", "").replace(" ", "");		
