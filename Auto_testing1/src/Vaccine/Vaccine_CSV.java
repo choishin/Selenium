@@ -82,7 +82,7 @@ public class Vaccine_CSV {
 
 	static void fileMake() {
 		try {
-			File file = new File("vaccine_daily.csv");
+			File file = new File("C:\\Users\\chois\\OneDrive\\πŸ≈¡ »≠∏È\\vaccine_daily.csv");
 			if (file.exists() == false) {
 				isFileExist = false;
 			} else {

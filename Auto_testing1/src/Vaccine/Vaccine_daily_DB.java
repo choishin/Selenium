@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 //시도별 예방접종자 데이터 전체 DB에 넣기
@@ -31,13 +32,8 @@ public class Vaccine_daily_DB {
 	static void ReadData() throws IOException {
 
 		try {
-			String path = "C:\\Users\\최신\\Desktop\\vaccine_daily.csv";
-			String line;
-			BufferedReader reader = new BufferedReader(new FileReader(path));
-			ArrayList<String> lines = new ArrayList<String>();
-
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.171.18:3306/kopoctc", "root", "kopoctc");
 			Statement stmt = conn.createStatement();
 
 			Date date = new Date();
@@ -53,6 +49,10 @@ public class Vaccine_daily_DB {
 			}
 
 			// 1. 자료 한줄씩 받고 ArrayList에 넣기
+			String path = "C:\\Users\\chois\\OneDrive\\바탕 화면\\vaccine_daily.csv";
+			String line;
+			BufferedReader reader = new BufferedReader(new FileReader(path));
+			ArrayList<String> lines = new ArrayList<String>();
 			rowsCnt = 0;
 			while ((line = reader.readLine()) != null) {
 				String[] column = line.split(",");
@@ -65,7 +65,7 @@ public class Vaccine_daily_DB {
 			String[][] words = new String[lines.size()][];
 			for (int i = 1; i < lines.size(); i++) {
 				words[i] = lines.get(i).split(",");
-				words[i][0] = words[i][1].replace(".", "").replace("24시 기준", "");
+				words[i][0] = words[i][0].replace(".", "").replace("24시 기준", "");
 				if (!lastdate_query.contains(Integer.toString(lastdate))) {
 					if (words[i][0].contains(Integer.toString(lastdate))) {
 						stmt.execute(
@@ -75,7 +75,7 @@ public class Vaccine_daily_DB {
 					}
 				}
 
-			}
+		}
 
 			stmt.close();
 			conn.close();
