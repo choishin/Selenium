@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -35,7 +36,6 @@ public class Main {
 	static void ReadData() throws IOException {
 
 		try {
-
 			System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH);
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--start-maximized"); // 전체화면으로 실행
@@ -83,110 +83,53 @@ public class Main {
 				String currentURL = driver.getCurrentUrl();
 				driver.get(currentURL);
 				Thread.sleep(3000);
-				// 이름가져오기
-				String restaurantName = driver
-						.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/span/span[1]"))
-						.getText();
-				Thread.sleep(3000);
-				// 별접가져오기
-				String stars;
+						
+				// 메뉴페이지에서 가격 긁어오기
 				try {
-					if (driver
-							.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[1]/em"))
-							.size() > 0) {
-						stars = driver
-								.findElement(
-										By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[1]/em"))
-								.getText();
-					} else {
-						stars = "정보없음";
+				WebElement menuBar = null;
+				int menuCnt = 0;
+				String menuTable = null;			
+				if (driver.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div")).size() > 0) {
+					menuBar = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div"));				
+					if (menuBar.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div/a")).size() > 0) {
+						menuCnt = menuBar.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div/a")).size();
+						for (int iCnt = 1; iCnt <= menuCnt; iCnt++) {
+							String menu = menuBar
+									.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div/a[" + iCnt + "]"))
+									.getText();
+							if (menu.contains("메뉴")) {
+								menuBar.findElement(
+										By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div/a[" + iCnt + "]"))
+										.click();
+								System.out.println(i+"번째 가게는 문제없어!");
+							}
+						}
 					}
+				}		
+				} catch (StaleElementReferenceException se) {
+					System.out.println(i+"번째 가게는 문제가 있어!");
+					System.out.println(se);
+					continue;
 				} catch (Exception e) {
 					System.out.println(e);
 					continue;
 				}
-				// 방문자리뷰개수
-				String visitorsReview;
-				if (driver.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[2]/a"))
-						.size() > 0) {
-					visitorsReview = driver
-							.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[2]/a"))
-							.getText();
-				} else {
-					visitorsReview = "정보없음";
-				}
-				// 블로거리뷰개수
-				String bloggerReview;
-				if (driver.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[3]/a"))
-						.size() > 0) {
-					bloggerReview = driver
-							.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[3]/a"))
-							.getText();
-				} else {
-					bloggerReview = "정보없음";
-				}
-				// 주소, 소개 등 정보 한번에 가져오기
-				String context = driver.findElement(By.className("_6aUG7")).getText();
-				System.out.println(i);
-				System.out.println(restaurantName);
-				System.out.println(stars);
-				System.out.println(visitorsReview);
-				System.out.println(bloggerReview);
-//				System.out.println(context);
-					
-				bfw.append(Integer.toString(i)+",");
-				bfw.append(restaurantName+",");
-				bfw.append(stars+",");
-				bfw.append(visitorsReview+",");
-				bfw.append(bloggerReview+",");
-				bfw.newLine();
-//				bfw.append(context+);
 				
-				// 메뉴페이지에서 가격 긁어오기
-//				WebElement menuBar = null;
-//				int menuCnt = 0;
-//				String menuTable = null;			
-//				if (driver.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div")).size() > 0) {
-//					menuBar = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div"));				
-//					if (menuBar.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div/a")).size() > 0) {
-//						menuCnt = menuBar.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div/a")).size();
-//						for (int iCnt = 1; iCnt <= menuCnt; iCnt++) {
-//							String menu = menuBar
-//									.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div/a[" + iCnt + "]"))
-//									.getText();
-//							if (menu.contains("메뉴")) {
-//								menuBar.findElement(
-//										By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div/a[" + iCnt + "]"))
-//										.click();
-//							}
-//						}
-//					}
-//				}				
 //				Thread.sleep(3000);
+//				//메뉴 정보 긁어오기
 //				try {
 //
-//				if (driver.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[5]/div/div[1]/div/ul")).size() > 0) {
-//					menuTable = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[5]/div/div[1]/div/ul"))
-//							.getText();
-//				}else if (driver.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[5]/div/div[1]/div[1]/ul"))
-//						.size() > 0) {
-//					menuTable = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[5]/div/div[1]/div[1]/ul"))
-//							.getText();
-//				}		
-//				else {
-//					
-//				}
 //								
-//				}catch (Exception e) {
+//				} 
+//				catch (Exception e) {
 //					System.out.println(e);
 //					continue;
 //				}
-//				// int menus = menuTable.findElements(By.className("_3j-Cj")).size();
-//				System.out.println(menuTable);
-//				driver.navigate().back();
-				driver.navigate().back();
-			}
 
+				driver.navigate().back();
+				Thread.sleep(2000);
+				driver.navigate().back();
+			}//for
 			driver.close();
 			Thread.sleep(2000);
 			driver.quit();
@@ -194,17 +137,16 @@ public class Main {
 		} catch (NoSuchElementException ne) {
 			System.out.println(ne);
 			System.out.println("데이터가 존재하지 않음");
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			System.out.println(e);
 		}
 		finally {
 			System.out.println("Done!");
 		}
 	}
-
 	static void fileMake() {
 		try {
-			File file = new File("gourmet_main.csv");
+			File file = new File("gourmet_menu.csv");
 			if (file.exists() == false) {
 				isFileExist = false;
 			} else {
@@ -220,15 +162,9 @@ public class Main {
 	static void headWrite() throws IOException {
 
 		if (isFileExist == false) {
-			String head = "인덱스,"+"식당이름," + "별점," + "방문자리뷰수," + "블로거리뷰수," + "주소," + "영업시간," +"편의,"+"설명," +"홈페이지," +"기타," + "\n";
+			String head = "인덱스,"+"메뉴이름," + "가격," + "\n";
 			bfw.write(head);
 		}
-	}
-	//혹시 메소드로 뺄수도 있으니 냅두겠음
-	static void fileWrite(String str) throws IOException {
-	
-			bfw.append(str);
-	
 	}
 
 	static void fileClose() {
