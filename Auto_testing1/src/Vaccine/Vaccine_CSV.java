@@ -16,6 +16,9 @@ public class Vaccine_CSV {
 	public static final String WEB_DRIVER_PATH = "C:\\chromedriver.exe";
 	public static final String filePath = "C:\\Users\\최신\\Desktop\\vaccine_daily.csv";
 	public static String base_url;
+	public static BufferedWriter bfw;
+	public static boolean isFileExist;
+	static int rowsCnt;
 
 	public static void main(String[] args) throws InterruptedException, IOException {
 
@@ -25,22 +28,16 @@ public class Vaccine_CSV {
 		fileClose();
 
 	}
-
-	static int rowsCnt;
-	public static BufferedWriter bfw;
-	public static boolean isFileExist;
-
 	static void ReadData() throws IOException {
 
 		try {
-
 			System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH);
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--start-maximized"); // 전체화면으로 실행
 			options.addArguments("--disable-popup-blocking"); // 팝업 무시
 			options.addArguments("--disable-default-apps"); // 기본앱 사용안함
-															// WebDriver 객체 생성
-			ChromeDriver driver = new ChromeDriver(options);
+															
+			ChromeDriver driver = new ChromeDriver(options);// WebDriver 객체 생성
 			base_url = "https://ncv.kdca.go.kr/mainStatus.es?mid=a11702000000";
 			driver.get(base_url);
 
@@ -52,7 +49,6 @@ public class Vaccine_CSV {
 			// System.out.println(rowsCnt);
 
 			for (int i = 1; i <= rowsCnt; i++) {
-
 				// 일자 가져오기
 				Thread.sleep(2000);
 				String daily_date = driver.findElement(By.xpath("/html/body/div/div[3]/div[1]/h4[1]/span")).getText()
@@ -78,6 +74,8 @@ public class Vaccine_CSV {
 
 		} catch (InterruptedException e) {
 			System.out.println(e);
+		} finally {
+			System.out.println("Done!");
 		}
 	}
 

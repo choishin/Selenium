@@ -35,7 +35,7 @@ public class Vaccine_DB {
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root",
-					"2356");
+					"kopoctc");
 			Statement stmt = conn.createStatement();
 
 			stmt.execute("create table vaccine("
@@ -65,10 +65,10 @@ public class Vaccine_DB {
 			// 1. 자료 한줄씩 받고 ArrayList에 넣기
 			rowsCnt = 0;
 			while ((line = reader.readLine()) != null) {
-				String[] column = line.split(",");
 				lines.add(line);
 				rowsCnt++;
 			}
+			reader.close();
 			// 2. 한줄씩 되어있는 자료를 ,로 잘라서 String[][] 에 넣기
 			// words[][0]: 인덱스 words[][1] : 날짜, words[][2] : 지역명, words[][3] : 1차접종,
 			// words[][4] : 1차접종(누계), words[][5]:2차접종, wods[][6] : 2차접종 누계

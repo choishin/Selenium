@@ -1,12 +1,9 @@
 package Vaccine;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
@@ -21,13 +18,13 @@ public class Pupulation_DB {
 	public static final String WEB_DRIVER_PATH = "C:\\chromedriver.exe";
 //	public static final String IP = "192.168.171.18";
 	public static final String IP = "192.168.23.87";
-	public static String base_url;
-	static int rowsCnt;
 	public static BufferedWriter bfw;
-	public static boolean isFileExist;
+	public static String base_url;
+	static boolean isFileExist;
+	static int rowsCnt;
 
 	public static void main(String[] args) throws InterruptedException, IOException {
-
+	
 		DBMake();
 		ReadData();
 
@@ -38,9 +35,8 @@ public class Pupulation_DB {
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root",
-					"2356");
+					"kopoctc");
 			Statement stmt = conn.createStatement();
-
 			stmt.execute("create table population(" + "city_name varchar(20)," + "city_population int" + ");");
 
 		} catch (Exception e) {
@@ -52,7 +48,6 @@ public class Pupulation_DB {
 	static void ReadData() throws IOException {
 
 		try {
-
 			System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH);
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--start-maximized"); // 전체화면으로 실행
@@ -73,11 +68,10 @@ public class Pupulation_DB {
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root",
-					"2356");
+					"kopoctc");
 			Statement stmt = conn.createStatement();
 
 			for (int iRow = 1; iRow <= rowsCnt; iRow++) {
-
 				// 한줄씩 읽어오기 (앞에 0,1번 필드 ※만일 남녀, 외국인 등 다른 데이터를 가져오고 싶다면 td자리에 다른 숫자를 넣으면됨)
 				Thread.sleep(2000);
 				String city_name = driver.findElement(By
@@ -99,6 +93,8 @@ public class Pupulation_DB {
 
 		} catch (Exception e) {
 			System.out.println(e);
+		} finally {
+			System.out.println("Done!");
 		}
 	}
 }
