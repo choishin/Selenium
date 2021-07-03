@@ -19,6 +19,9 @@ public class Price {
 	public static final String WEB_DRIVER_ID = "webdriver.chrome.driver";
 	public static final String WEB_DRIVER_PATH = "C:\\chromedriver.exe";
 	public static String base_url;
+	public static BufferedWriter bfw;
+	public static boolean isFileExist;
+	static int rowsCnt;
 
 	public static void main(String[] args) throws InterruptedException, IOException {
 
@@ -28,11 +31,7 @@ public class Price {
 		fileClose();
 
 	}
-
-	static int rowsCnt;
-	public static BufferedWriter bfw;
-	public static boolean isFileExist;
-
+	
 	static void ReadData() throws IOException {
 
 		try {
@@ -94,7 +93,6 @@ public class Price {
 						.getText();
 				WebElement menuBar = null;
 				int menuCnt = 0;
-				String menuTable = null;
 				try {
 					// 메뉴페이지를 선택해서 들어가기
 					if (driver.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div"))
@@ -235,6 +233,8 @@ public class Price {
 			
 		} catch (InterruptedException e) {
 			System.out.println(e);
+		} finally {
+			System.out.println("Done!");
 		}
 	}
 
@@ -259,13 +259,6 @@ public class Price {
 			String head = "인덱스," + "식당이름," + "메뉴," + "가격," + "\n";
 			bfw.write(head);
 		}
-	}
-
-	// 혹시 메소드로 뺄수도 있으니 냅두겠음
-	static void fileWrite(String str) throws IOException {
-
-		bfw.append(str);
-
 	}
 
 	static void fileClose() {

@@ -14,6 +14,9 @@ public class Image_DBwrite {
 
 	public static final String WEB_DRIVER_ID = "webdriver.chrome.driver";
 	public static final String WEB_DRIVER_PATH = "C:\\chromedriver.exe";
+//	public static final String IP = "192.168.171.18"; 
+	public static final String IP = "192.168.23.87"; 
+	public static final String filePath = "C:\\Users\\최신\\Desktop\\gourmet_image.csv"; 
 	public static String base_url;
 	static int rowsCnt;
 	public static BufferedWriter bfw;
@@ -22,7 +25,7 @@ public class Image_DBwrite {
 	public static void main(String[] args) throws InterruptedException, IOException {
 
 			DBMake();
-		ReadData();
+			ReadData();
 
 	}
 
@@ -30,7 +33,7 @@ public class Image_DBwrite {
 		try {
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://34.83.91.32:3306/kopoctc", "root", "2356");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "2356");
 			Statement stmt = conn.createStatement();
 
 			stmt.execute("create table gourmet_image("
@@ -49,7 +52,7 @@ public class Image_DBwrite {
 	static void ReadData() throws IOException {
 
 		try {
-			String path = "C:\\Users\\최신\\Desktop\\gourmet_image.csv";
+			String path = filePath;
 			String line;
 			BufferedReader reader = new BufferedReader(new FileReader(path));
 			ArrayList<String> lines = new ArrayList<String>();
@@ -57,11 +60,11 @@ public class Image_DBwrite {
 			// 1. 자료 한줄씩 받고 ArrayList에 넣기
 			rowsCnt = 0;
 			while ((line = reader.readLine()) != null) {
-				String[] column = line.split(",");
 				lines.add(line);
 //				System.out.println(line);
 				rowsCnt++;
 			}
+			reader.close();
 			// 2. 한줄씩 되어있는 자료를 ,로 잘라서 String[][] 에 넣기
 			// words[][0]: 상호명 words[][1] : 이미지
 			String[][] words = new String[lines.size()][];
@@ -71,7 +74,7 @@ public class Image_DBwrite {
 			}
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://34.83.91.32:3306/kopoctc", "root", "2356");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "2356");
 			Statement stmt = conn.createStatement();
 
 			for (int iRow = 1; iRow < rowsCnt; iRow++) {

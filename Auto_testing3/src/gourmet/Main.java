@@ -18,6 +18,9 @@ public class Main {
 	public static final String WEB_DRIVER_ID = "webdriver.chrome.driver";
 	public static final String WEB_DRIVER_PATH = "C:\\chromedriver.exe";
 	public static String base_url;
+	public static BufferedWriter bfw;
+	public static boolean isFileExist;
+	static int rowsCnt;
 
 	public static void main(String[] args) throws InterruptedException, IOException {
 
@@ -27,11 +30,6 @@ public class Main {
 		fileClose();
 
 	}
-
-	static int rowsCnt;
-	public static BufferedWriter bfw;
-	public static boolean isFileExist;
-
 	static void ReadData() throws IOException {
 
 		try {
@@ -125,8 +123,6 @@ public class Main {
 				} else {
 					bloggerReview = "정보없음";
 				}
-				// 주소, 소개 등 정보 한번에 가져오기
-				String context = driver.findElement(By.className("_6aUG7")).getText();
 				System.out.println(i);
 				System.out.println(restaurantName);
 				System.out.println(stars);
@@ -152,6 +148,8 @@ public class Main {
 			System.out.println("데이터가 존재하지 않음");
 		} catch (InterruptedException e) {
 			System.out.println(e);
+		} finally {
+			System.out.println("Done!");
 		}
 	}
 
@@ -176,12 +174,6 @@ public class Main {
 			String head = "인덱스,"+"식당이름," + "별점," + "방문자리뷰수," + "블로거리뷰수," + "주소," + "영업시간," +"편의,"+"설명," +"홈페이지," +"기타," + "\n";
 			bfw.write(head);
 		}
-	}
-	//혹시 메소드로 뺄수도 있으니 냅두겠음
-	static void fileWrite(String str) throws IOException {
-	
-			bfw.append(str);
-	
 	}
 
 	static void fileClose() {

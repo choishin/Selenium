@@ -18,6 +18,9 @@ public class Context {
 	public static final String WEB_DRIVER_ID = "webdriver.chrome.driver";
 	public static final String WEB_DRIVER_PATH = "C:\\chromedriver.exe";
 	public static String base_url;
+	public static BufferedWriter bfw;
+	public static boolean isFileExist;
+	static int rowsCnt;
 
 	public static void main(String[] args) throws InterruptedException, IOException {
 
@@ -27,10 +30,6 @@ public class Context {
 		fileClose();
 
 	}
-
-	static int rowsCnt;
-	public static BufferedWriter bfw;
-	public static boolean isFileExist;
 
 	static void ReadData() throws IOException {
 
@@ -137,11 +136,9 @@ public class Context {
 					if (contextArr[iContext].contains("설명")) {
 						info = contextArr[iContext + 1].replace(",", "/");
 					}
-
 //				System.out.println(iContext+"->"+contextArr[iContext]);
 
 				}
-
 				System.out.println("주소->" + address);
 				System.out.println("영업시간->" + openHour);
 				System.out.println("편의->" + service);
@@ -189,13 +186,7 @@ public class Context {
 			bfw.write(head);
 		}
 	}
-
-//	static void fileWrite(String str) throws IOException {
-//	
-//			bfw.append(str);
-//	
-//	}
-
+	
 	static void fileClose() {
 		try {
 			bfw.close();
