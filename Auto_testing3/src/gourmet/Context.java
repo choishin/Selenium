@@ -153,59 +153,6 @@ public class Context {
 				bfw.append(info+",");
 				bfw.newLine();
 
-//			String[] contextArr = context.split("\n");
-//			System.out.println(contextArr);
-//			//8번째 페이지에 대한 예외처리
-//			if (i==8) {
-//				Thread.sleep(3000);
-//				String innerURL = driver.getCurrentUrl();
-//				driver.get(innerURL);
-//				Thread.sleep(3000);
-//				if(driver.findElements(By.xpath("/html/body/div[1]/div/header/div[2]/div")).size() > 0) {
-//					menuBar = driver.findElement(By.xpath("/html/body/div[1]/div/header/div[2]/div"));
-//					menuCnt = menuBar.findElements(By.xpath("/html/body/div[1]/div/header/div[2]/div/a")).size();
-//					for (int iCnt=1; iCnt <=menuCnt; iCnt++) {
-//						String menu = menuBar.findElement(By.xpath("/html/body/div[1]/div/header/div[2]/div/a["+iCnt+"]")).getText();
-//						if (menu.contains("메뉴")) {
-//							menuBar.findElement(By.xpath("/html/body/div[1]/div/header/div[2]/div/a["+iCnt+"]")).click();
-//							innerURL = driver.getCurrentUrl();
-//							driver.get(innerURL);
-//							Thread.sleep(3000);
-//							menuTable = driver.findElement(By.xpath("/html/body")).getText();
-//						}
-//					}
-//				}
-//			
-//			}
-//			
-//			//9번째 페이지 
-//			driver.findElement(By.xpath("/html/body/div[4]/div[2]/ul/li[9]/div[1]/a[2]")).click();
-//			String currentURL = driver.getCurrentUrl();
-//			driver.get(currentURL);
-//			Thread.sleep(2000);
-//			WebElement menuBar = null;
-//			int menuCnt = 0;
-//			String menuTable = null;
-//			if (driver.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div")).size() > 0) {
-//				menuBar = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div"));
-//				if (menuBar.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div/a"))
-//						.size() > 0) {
-//					menuCnt = menuBar
-//							.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div/a")).size();
-//					for (int iCnt = 1; iCnt <= menuCnt; iCnt++) {
-//						String menu = menuBar
-//								.findElement(By.xpath(
-//										"/html/body/div[3]/div/div[2]/div[3]/div/div/div/div/a[" + iCnt + "]"))
-//								.getText();
-//						if (menu.contains("메뉴")) {
-//							menuBar.findElement(
-//									By.xpath("/html/body/div[3]/div/div[2]/div[3]/div/div/div/div/a[" + iCnt + "]"))
-//									.click();
-//						}
-//					}
-//				}
-//			}
-
 				driver.navigate().back();
 			}
 			Thread.sleep(3000);

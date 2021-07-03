@@ -1,4 +1,4 @@
-package Vaccine;
+package DBwrite;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,9 +8,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 
-//시도별 예방접종자 데이터 전체 DB에 넣기
-public class Vaccine_DB {
+
+//맛집 정보,가격 데이터 전체 DB에 넣기
+public class Price_DBwrite {
 
 	public static final String WEB_DRIVER_ID = "webdriver.chrome.driver";
 	public static final String WEB_DRIVER_PATH = "C:\\chromedriver.exe";
@@ -26,7 +28,7 @@ public class Vaccine_DB {
 
 	}
 	
-
+	//코드 마저 완성해야함
 	static void DBMake() {
 		try {
 
@@ -35,26 +37,24 @@ public class Vaccine_DB {
 					"2356");
 			Statement stmt = conn.createStatement();
 
-			stmt.execute("create table vaccine("
-					+ "vaccine_index int auto_increment primary key,"
-					+ "vaccine_date varchar(50),"
-					+ "city_name varchar(20),"
-					+ "first_day_only int,"
-					+ "first_day_total int,"
-					+ "second_day_only int,"
-					+ "second_day_total int "
+			stmt.execute("create table gourmet_price("
+					+ "gourmet_name varchar(20),"
+					+ "gourmet_menu varchar(200),"
+					+ "gourmet_price varchar(200)"
 					+ ");");
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println(e);
+		} finally {
+			System.out.println("DBmake Done!");
 		}
 	}
 
 	static void ReadData() throws IOException {
 
 		try {
-			String path = "C:\\Users\\최신\\Desktop\\vaccine_daily.csv";
+			String path = "C:\\Users\\최신\\Desktop\\gourmet_price.csv";
 			String line;
 			BufferedReader reader = new BufferedReader(new FileReader(path));
 			ArrayList<String> lines = new ArrayList<String>();
@@ -64,16 +64,15 @@ public class Vaccine_DB {
 			while ((line = reader.readLine()) != null) {
 				String[] column = line.split(",");
 				lines.add(line);
+//				System.out.println(line);
 				rowsCnt++;
 			}
 			// 2. 한줄씩 되어있는 자료를 ,로 잘라서 String[][] 에 넣기
-			// words[][0]: 인덱스 words[][1] : 날짜, words[][2] : 지역명, words[][3] : 1차접종,
-			// words[][4] : 1차접종(누계), words[][5]:2차접종, wods[][6] : 2차접종 누계
+			// words[][0]: 상호명 words[][1] : 메뉴명, words[][2] : 가격
 			String[][] words = new String[lines.size()][];
 			for (int i = 1; i < lines.size(); i++) {
 				words[i] = lines.get(i).split(",");
-				words[i][0] = words[i][0].replace(".", "").replace("24시 기준", "");
-				// System.out.println(Arrays.toString(words[i]));
+//				 System.out.println(Arrays.toString(words[i]));
 			}
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -82,16 +81,12 @@ public class Vaccine_DB {
 
 			for (int iRow = 1; iRow < rowsCnt; iRow++) {
 				stmt.execute(
-						"insert into vaccine (vaccine_date,city_name,first_day_only,first_day_total,second_day_only,second_day_total)"
-								+ "values('" + words[iRow][0] + "','" + words[iRow][1] + "'," + words[iRow][2] + ","
-								+ words[iRow][3] + "," + words[iRow][4] + "," + words[iRow][5] + ");");
+						"insert into gourmet_price (gourmet_name,gourmet_menu,gourmet_price)"
+								+ "values('" + words[iRow][0].replace("'", "") + "','" + words[iRow][1].replace("'", "") + "','" + words[iRow][2].replace("'", "") +"');");
 
-				System.out.println(words[iRow][0].replace(".", "").replace("24시 기준", ""));
+				System.out.println(words[iRow][0]);
 				System.out.println(words[iRow][1]);
 				System.out.println(words[iRow][2]);
-				System.out.println(words[iRow][3]);
-				System.out.println(words[iRow][4]);
-				System.out.println(words[iRow][5]);
 
 			}
 			stmt.close();
@@ -99,7 +94,10 @@ public class Vaccine_DB {
 
 		} catch (Exception e) {
 			System.out.println(e);
+		} finally {
+			System.out.println("Data insert Done!");
 		}
 	}
 
 }
+

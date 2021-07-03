@@ -35,8 +35,8 @@ public class Pupulation_DB {
 		try {
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.171.18:3306/kopoctc", "root",
-					"kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://34.83.91.32:3306/kopoctc", "root",
+					"2356");
 			Statement stmt = conn.createStatement();
 
 			stmt.execute("create table population(" + "city_name varchar(20)," + "city_population int" + ");");
@@ -70,8 +70,8 @@ public class Pupulation_DB {
 			rowsCnt = rows.size();
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.171.18:3306/kopoctc", "root",
-					"kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://34.83.91.32:3306/kopoctc", "root",
+					"2356");
 			Statement stmt = conn.createStatement();
 
 			for (int iRow = 1; iRow <= rowsCnt; iRow++) {

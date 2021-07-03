@@ -1,4 +1,4 @@
-package gourmet;
+package Image;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,7 +13,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-public class Main {
+public class Image {
 
 	public static final String WEB_DRIVER_ID = "webdriver.chrome.driver";
 	public static final String WEB_DRIVER_PATH = "C:\\chromedriver.exe";
@@ -61,9 +61,10 @@ public class Main {
 			WebElement body = driver.findElement(By.xpath("/html/body/div[4]/div[2]/ul"));
 			List<WebElement> rows = body.findElements(By.xpath("/html/body/div[4]/div[2]/ul/li"));
 			rowsCnt = rows.size();
-			
-			//행의 개수만큼 링크를 하나씩 누르기
+
+			// 행의 개수만큼 링크를 하나씩 누르기
 			for (int i = 1; i <= rowsCnt; i++) {
+				System.out.println(i);
 				try {
 					Thread.sleep(5000);
 					if (driver.findElements(By.xpath("/html/body/div[4]/div[2]/ul/li[" + i + "]/div[1]/a[2]"))
@@ -87,57 +88,11 @@ public class Main {
 				String restaurantName = driver
 						.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/span/span[1]"))
 						.getText();
-				Thread.sleep(3000);
-				// 별접가져오기
-				String stars;
-				try {
-					if (driver
-							.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[1]/em"))
-							.size() > 0) {
-						stars = driver
-								.findElement(
-										By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[1]/em"))
-								.getText();
-					} else {
-						stars = "정보없음";
-					}
-				} catch (Exception e) {
-					System.out.println(e);
-					continue;
-				}
-				// 방문자리뷰개수
-				String visitorsReview;
-				if (driver.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[2]/a"))
-						.size() > 0) {
-					visitorsReview = driver
-							.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[2]/a"))
-							.getText();
-				} else {
-					visitorsReview = "정보없음";
-				}
-				// 블로거리뷰개수
-				String bloggerReview;
-				if (driver.findElements(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[3]/a"))
-						.size() > 0) {
-					bloggerReview = driver
-							.findElement(By.xpath("/html/body/div[3]/div/div[2]/div[1]/div/div/div[1]/div/span[3]/a"))
-							.getText();
-				} else {
-					bloggerReview = "정보없음";
-				}
-				// 주소, 소개 등 정보 한번에 가져오기
-				String context = driver.findElement(By.className("_6aUG7")).getText();
-				System.out.println(i);
+				currentURL = currentURL.replace("/home","/photo/#photo");
 				System.out.println(restaurantName);
-				System.out.println(stars);
-				System.out.println(visitorsReview);
-				System.out.println(bloggerReview);
-					
-				bfw.append(Integer.toString(i)+",");
-				bfw.append(restaurantName+",");
-				bfw.append(stars+",");
-				bfw.append(visitorsReview+",");
-				bfw.append(bloggerReview+",");
+				System.out.println(currentURL);			
+				bfw.append(restaurantName + ",");
+				bfw.append(currentURL + ",");
 				bfw.newLine();
 				Thread.sleep(2000);
 				driver.navigate().back();
@@ -152,12 +107,14 @@ public class Main {
 			System.out.println("데이터가 존재하지 않음");
 		} catch (InterruptedException e) {
 			System.out.println(e);
+		} finally {
+			System.out.println("Done!");
 		}
 	}
 
 	static void fileMake() {
 		try {
-			File file = new File("gourmet_main.csv");
+			File file = new File("gourmet_image.csv");
 			if (file.exists() == false) {
 				isFileExist = false;
 			} else {
@@ -173,15 +130,16 @@ public class Main {
 	static void headWrite() throws IOException {
 
 		if (isFileExist == false) {
-			String head = "인덱스,"+"식당이름," + "별점," + "방문자리뷰수," + "블로거리뷰수," + "주소," + "영업시간," +"편의,"+"설명," +"홈페이지," +"기타," + "\n";
+			String head = "상호명," + "사진주소," + "\n";
 			bfw.write(head);
 		}
 	}
-	//혹시 메소드로 뺄수도 있으니 냅두겠음
+
+	// 혹시 메소드로 뺄수도 있으니 냅두겠음
 	static void fileWrite(String str) throws IOException {
-	
-			bfw.append(str);
-	
+
+		bfw.append(str);
+
 	}
 
 	static void fileClose() {
