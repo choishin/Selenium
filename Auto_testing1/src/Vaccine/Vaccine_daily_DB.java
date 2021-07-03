@@ -18,6 +18,8 @@ public class Vaccine_daily_DB {
 
 	public static final String WEB_DRIVER_ID = "webdriver.chrome.driver";
 	public static final String WEB_DRIVER_PATH = "C:\\chromedriver.exe";
+	public static final String IP = "192.168.23.87";
+//	public static final String IP = "192.168.171.18";
 	public static String base_url;
 	static int rowsCnt;
 	public static BufferedWriter bfw;
@@ -33,7 +35,7 @@ public class Vaccine_daily_DB {
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.98:3306/kopoctc", "root", "kopoctc");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root", "kopoctc");
 			Statement stmt = conn.createStatement();
 
 			Date date = new Date();

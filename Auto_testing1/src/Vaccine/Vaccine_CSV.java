@@ -14,6 +14,7 @@ public class Vaccine_CSV {
 
 	public static final String WEB_DRIVER_ID = "webdriver.chrome.driver";
 	public static final String WEB_DRIVER_PATH = "C:\\chromedriver.exe";
+	public static final String filePath = "C:\\Users\\최신\\Desktop\\vaccine_daily.csv";
 	public static String base_url;
 
 	public static void main(String[] args) throws InterruptedException, IOException {
@@ -82,7 +83,7 @@ public class Vaccine_CSV {
 
 	static void fileMake() {
 		try {
-			File file = new File("C:\\Users\\chois\\OneDrive\\바탕 화면\\vaccine_daily.csv");
+			File file = new File(filePath);
 			if (file.exists() == false) {
 				isFileExist = false;
 			} else {

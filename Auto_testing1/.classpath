@@ -6,13 +6,13 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/최신/Downloads/mysql-connector-java-8.0.23/mysql-connector-java-8.0.23.jar"/>
-	<classpathentry kind="lib" path="C:/Users/최신/Desktop/selenium-java-3.141.59/client-combined-3.141.59.jar"/>
-	<classpathentry kind="lib" path="C:/Users/최신/Desktop/selenium-java-3.141.59/client-combined-3.141.59-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/최신/Desktop/selenium-java-3.141.59/libs/byte-buddy-1.8.15.jar"/>
-	<classpathentry kind="lib" path="C:/Users/최신/Desktop/selenium-java-3.141.59/libs/commons-exec-1.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/최신/Desktop/selenium-java-3.141.59/libs/guava-25.0-jre.jar"/>
-	<classpathentry kind="lib" path="C:/Users/최신/Desktop/selenium-java-3.141.59/libs/okhttp-3.11.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/최신/Desktop/selenium-java-3.141.59/libs/okio-1.14.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/chois/OneDrive/바탕 화면/selenium-java-3.141.59/client-combined-3.141.59.jar"/>
+	<classpathentry kind="lib" path="C:/Users/chois/OneDrive/바탕 화면/selenium-java-3.141.59/client-combined-3.141.59-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/chois/OneDrive/바탕 화면/selenium-java-3.141.59/libs/byte-buddy-1.8.15.jar"/>
+	<classpathentry kind="lib" path="C:/Users/chois/OneDrive/바탕 화면/selenium-java-3.141.59/libs/commons-exec-1.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/chois/OneDrive/바탕 화면/selenium-java-3.141.59/libs/guava-25.0-jre.jar"/>
+	<classpathentry kind="lib" path="C:/Users/chois/OneDrive/바탕 화면/selenium-java-3.141.59/libs/okhttp-3.11.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/chois/OneDrive/바탕 화면/selenium-java-3.141.59/libs/okio-1.14.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/chois/OneDrive/바탕 화면/mysql-connector-java-8.0.24/mysql-connector-java-8.0.24/mysql-connector-java-8.0.24.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

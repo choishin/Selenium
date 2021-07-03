@@ -19,6 +19,8 @@ public class Pupulation_DB {
 
 	public static final String WEB_DRIVER_ID = "webdriver.chrome.driver";
 	public static final String WEB_DRIVER_PATH = "C:\\chromedriver.exe";
+//	public static final String IP = "192.168.171.18";
+	public static final String IP = "192.168.23.87";
 	public static String base_url;
 	static int rowsCnt;
 	public static BufferedWriter bfw;
@@ -35,7 +37,7 @@ public class Pupulation_DB {
 		try {
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://34.83.91.32:3306/kopoctc", "root",
+			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root",
 					"2356");
 			Statement stmt = conn.createStatement();
 
@@ -70,7 +72,7 @@ public class Pupulation_DB {
 			rowsCnt = rows.size();
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://34.83.91.32:3306/kopoctc", "root",
+			Connection conn = DriverManager.getConnection("jdbc:mysql://"+IP+":3306/kopoctc", "root",
 					"2356");
 			Statement stmt = conn.createStatement();
 
